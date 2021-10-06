@@ -24,6 +24,7 @@ public final class DraimShop extends JavaPlugin {
         }
 
         this.support = new ExternalPluginsSupport(this);
+        this.support.init();
 
     }
 
