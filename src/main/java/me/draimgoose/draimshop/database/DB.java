@@ -62,6 +62,27 @@ public abstract class DB {
         }
     }
 
+    public List<Integer> getUnlockedShops(Player player) {
+        String string = player.getUniqueId().toString();
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Integer> result = new ArrayList<>();
+        try {
+            conn = getSQLConnection();
+            ps = conn.prepareStatement("SELECT * FROM " + shopsUnlocked + " WHERE player = '" + string + "';");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                result.add(rs.getInt("shops_unlocked"));
+            }
+        } catch (SQLException ex) {
+            plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
+        } finally {
+            close(ps, conn);
+        }
+        return result;
+    }
+
     public Integer getTotalShopOwned(UUID playerID) {
         String string = playerID.toString();
         Connection conn = null;
