@@ -1,0 +1,5 @@
+name: DraimShop
+version: '${project.version}'
+main: me.draimgoose.draimshop.plugin.DraimShop
+api-version: 1.17
+authors: [ DraimGooSe ]
