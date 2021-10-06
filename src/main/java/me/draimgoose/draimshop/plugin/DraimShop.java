@@ -3,6 +3,7 @@ package me.draimgoose.draimshop.plugin;
 import me.draimgoose.draimshop.database.DB;
 import me.draimgoose.draimshop.plugin.DraimShopLogger.LVL;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -26,6 +27,14 @@ public final class DraimShop extends JavaPlugin {
         this.support = new ExternalPluginsSupport(this);
         this.support.init();
 
+        if(!this.getDataFolder().exists()) {
+            try {
+                this.getDataFolder().mkdir();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        PluginManager plMGR = getServer().getPluginManager();
     }
 
     @Override
@@ -56,5 +65,9 @@ public final class DraimShop extends JavaPlugin {
 
     public Economy getEco() {
         return this.eco;
+    }
+
+    public ExternalPluginsSupport support() {
+        return this.support;
     }
 }
