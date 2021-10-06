@@ -10,6 +10,7 @@ public final class DraimShop extends JavaPlugin {
     private static DraimShop plInst;
     private static DB db;
     private Economy eco;
+    private ExternalPluginsSupport support;
 
     @Override
     public void onEnable() {
@@ -21,6 +22,8 @@ public final class DraimShop extends JavaPlugin {
         } else {
             DraimShopLogger.sendMSG("Схватил за яички Vault", LVL.SUCCESS);
         }
+
+        this.support = new ExternalPluginsSupport(this);
 
     }
 
