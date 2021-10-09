@@ -1,8 +1,25 @@
 package me.draimgoose.draimshop.plugin;
 
+import me.draimgoose.draimshop.crate.UnlockShop;
 import me.draimgoose.draimshop.database.DB;
+import me.draimgoose.draimshop.database.SQLite;
+import me.draimgoose.draimshop.gui.CreationGUI;
+import me.draimgoose.draimshop.player.PlayerJoin;
+import me.draimgoose.draimshop.player.PlayerLeave;
+import me.draimgoose.draimshop.player.PlayerMove;
+import me.draimgoose.draimshop.player.PlayerTeleport;
 import me.draimgoose.draimshop.plugin.DraimShopLogger.LVL;
+import me.draimgoose.draimshop.shop.ShopCreation;
+import me.draimgoose.draimshop.shop.ShopExit;
+import me.draimgoose.draimshop.shop.ShopOpening;
+import me.draimgoose.draimshop.shop.ShopRemoval;
+import me.draimgoose.draimshop.shop.briefcase.BCInteractInv;
+import me.draimgoose.draimshop.shop.briefcase.BCListItem;
+import me.draimgoose.draimshop.shop.vm.VMInteractInv;
+import me.draimgoose.draimshop.shop.vm.VMListItem;
+import me.draimgoose.draimshop.utils.LangUtils;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -34,7 +51,30 @@ public final class DraimShop extends JavaPlugin {
                 e.printStackTrace();
             }
         }
-        PluginManager plMGR = getServer().getPluginManager();
+        PluginManager pluginManager = getServer().getPluginManager();
+        pluginManager.registerEvents(new ShopOpening(), this);
+        pluginManager.registerEvents(new ShopExit(), this);
+        pluginManager.registerEvents(new VMInteractInv(), this);
+        pluginManager.registerEvents(new VMListItem(), this);
+        pluginManager.registerEvents(new BCInteractInv(), this);
+        pluginManager.registerEvents(new BCListItem(), this);
+        pluginManager.registerEvents(new ShopCreation(), this);
+        pluginManager.registerEvents(new ShopRemoval(), this);
+        pluginManager.registerEvents(new UnlockShop(), this);
+        pluginManager.registerEvents(new PlayerTeleport(), this);
+        pluginManager.registerEvents(new PlayerMove(), this);
+        pluginManager.registerEvents(new PlayerLeave(), this);
+        pluginManager.registerEvents(new PlayerJoin(), this);
+        PluginCommand mainCommand = getCommand("draimshop");
+        mainCommand.setExecutor(new DSComdExec());
+        mainCommand.setTabCompleter(new AutoComplete());
+
+        this.db = new SQLite(this);
+        this.db.load();
+
+        saveDefaultConfig();
+        LangUtils.loadLangConfig();
+        CreationGUI.initialize();
     }
 
     @Override
