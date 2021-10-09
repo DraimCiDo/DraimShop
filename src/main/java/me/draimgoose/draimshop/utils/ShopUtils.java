@@ -21,7 +21,7 @@ public class ShopUtils {
     private ShopUtils() {
     }
 
-    private static boolean hasPermA(ArmorStand armorStand, Player player) {
+    private static boolean hasPerm(ArmorStand armorStand, Player player) {
         if (player.hasPermission("draimshop.admin") || player.isOp()) {
             return true;
         }
