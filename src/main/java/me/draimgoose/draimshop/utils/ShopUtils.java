@@ -21,14 +21,13 @@ public class ShopUtils {
     private ShopUtils() {
     }
 
-    private static boolean hasPerm(ArmorStand armorStand, Player player) {
+    public static boolean hasShopPermission(ArmorStand armorStand, Player player) {
         if (player.hasPermission("draimshop.admin") || player.isOp()) {
             return true;
         }
-        EntityEquipment equip = armorStand.getEquipment();
-
-        ItemStack adminItem = equip.getBoots();
-        if (adminItem != null & adminItem.getType() != Material.AIR) {
+        EntityEquipment equipment = armorStand.getEquipment();
+        ItemStack adminItem = equipment.getBoots();
+        if (adminItem != null && adminItem.getType() != Material.AIR) {
             return false;
         }
 
