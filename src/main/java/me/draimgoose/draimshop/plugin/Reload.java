@@ -11,7 +11,7 @@ public class Reload extends DSComd {
 
     @Override
     public boolean exec() {
-        if (!sender.hasPermission("customshop.reload")) {
+        if (!sender.hasPermission("draimshop.reload")) {
             sender.sendMessage(LangUtils.getString("command-no-perms"));
         } else {
             DraimShop.getPlugin().reloadConfig();
