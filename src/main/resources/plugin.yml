@@ -2,4 +2,41 @@ name: DraimShop
 version: '${project.version}'
 main: me.draimgoose.draimshop.plugin.DraimShop
 api-version: 1.17
-authors: [ DraimGooSe ]
+author: DraimGooSe
+depend: [Vault]
+softdepend:
+  - WorldGuard,
+  - ItemsAdder,
+  - ProtocolLib,
+  - LocaleLib
+commands:
+  draimshop:
+    aliases: [ds]
+
+permissions:
+  draimshop.createshop:
+    description: Игок может создать магазин.
+    default: true
+  draimshop.removeshop.break:
+    description: Игрок может удалить магазин, разбив блок магазина.
+    default: true
+  draimshop.removeshop.command:
+    description: Админ может удалить магазин с помощью команды.
+    default: op
+  draimshop.locaall:
+    description: Админ может заблокировать все магазины игрока.
+    default: op
+  draimshop.setcount:
+    description: Админ может установить кол-во магазинов для игрока.
+    default: op
+  draimshop.reload:
+    description: Админ может перезагрузить конфигурацию плагина.
+    default: op
+  draimshop.admin:
+    description: Админ может выполнять все команды и иметь полный доступ к данному плагину.
+    default: op
+    children:
+      draimshop.removeshop.command: true
+      draimshop.locaall: true
+      draimshop.setcount: true
+      draimshop.reload: true

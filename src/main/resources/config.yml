@@ -1,0 +1,70 @@
+# Основные настройки
+max-shops: 3
+unlock-all: true
+language: russian
+round-down-price: false
+max-price: 5000000.00
+# WG настройки
+worldguard-enabled: true
+# ItemsAdder конфигурация
+defaults:
+  vending-machine: 100
+  briefcase: 200
+
+vending-machine:
+  wooden:
+    name: §6Деревянный Торговый Автомат
+    model-data: 101
+  stone:
+    name: §6Каменный Торговый Автомат
+    model-data: 102
+  nether:
+    name: §6Адский Торговый Автомат
+    model-data: 103
+  sand:
+    name: §6Песчанный Торговый Автомат
+    model-data: 104
+  prismarine:
+    name: §6Призмариновый Торговый Автомат
+    model-data: 105
+  ice:
+    name: §6Ледянной Торговый Автомат
+    model-data: 106
+  blackstone:
+    name: §6Каменный Торговый Автомат
+    model-data: 107
+  copper:
+    name: §6Медный Торговый Автомат
+    model-data: 108
+  amethyst:
+    name: §6Аметисовый Торговый Автомат
+    model-data: 109
+
+briefcase:
+  wooden:
+    name: §6Деревянный портфель
+    model-data: 201
+  stone:
+    name: §6Каменный портфель
+    model-data: 202
+  nether:
+    name: §6Адский портфель
+    model-data: 203
+  sand:
+    name: §6Песчянный портфель
+    model-data: 204
+  prismarine:
+    name: §6Призмарнновый портфель
+    model-data: 205
+  ice:
+    name: §6Ляденной портфель
+    model-data: 206
+  blackstone:
+    name: §6Каменный портфель
+    model-data: 207
+  copper:
+    name: §6Медный портфель
+    model-data: 208
+  amethyst:
+    name: §6Аметисовый портфель
+    model-data: 209
