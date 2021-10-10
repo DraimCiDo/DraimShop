@@ -16,7 +16,7 @@ public class Reload extends DSComd {
         } else {
             DraimShop.getPlugin().reloadConfig();
             LangUtils.loadLangConfig();
-            sender.sendMessage("§7(§6DraimShop§7) §aКонфигурация успешно перезагружена.");
+            sender.sendMessage("§7(§6DraimShop§7) §fКонфигурация успешно перезагружена.");
         }
         return true;
     }

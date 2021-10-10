@@ -1,7 +1,7 @@
 # Основные настройки
 max-shops: 3
 unlock-all: true
-language: russian
+lang: russian
 round-down-price: false
 max-price: 5000000.00
 # WG настройки
@@ -31,7 +31,7 @@ vending-machine:
     name: §6Ледянной Торговый Автомат
     model-data: 106
   blackstone:
-    name: §6Каменный Торговый Автомат
+    name: §6Чернитный Торговый Автомат
     model-data: 107
   copper:
     name: §6Медный Торговый Автомат
@@ -60,7 +60,7 @@ briefcase:
     name: §6Ляденной портфель
     model-data: 206
   blackstone:
-    name: §6Каменный портфель
+    name: §6Чернитный портфель
     model-data: 207
   copper:
     name: §6Медный портфель

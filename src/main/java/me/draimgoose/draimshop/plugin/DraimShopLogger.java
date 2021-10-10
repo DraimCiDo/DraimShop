@@ -25,6 +25,6 @@ public class DraimShopLogger {
     }
 
     public static void sendMSG(String msg, LVL type) {
-        getLogger().sendMessage(type + "(DraimShop)" + msg);
+        getLogger().sendMessage(type + "[DraimShop] " + msg);
     }
 }
