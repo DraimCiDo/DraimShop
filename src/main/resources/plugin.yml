@@ -3,14 +3,8 @@ version: '${project.version}'
 main: me.draimgoose.draimshop.plugin.DraimShop
 api-version: 1.17
 author: DraimGooSe
-depend: [Vault]
-softdepend:
-  [
-    WorldGuard,
-    ItemsAdder,
-    ProtocolLib,
-    LocaleLib,
-  ]
+depend: [Vault, ProtocolLib]
+softdepend: [WorldGuard, ItemsAdder, LocaleLib]
 commands:
   draimshop:
     aliases: [ds]

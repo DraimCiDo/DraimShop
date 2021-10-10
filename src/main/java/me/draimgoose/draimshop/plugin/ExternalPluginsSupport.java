@@ -40,53 +40,105 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class ExternalPluginsSupport {
-    private DraimShop pl;
-    private final String[] landProtectPl = new String[] { "WorldGuard" };
-    private final String[] customItemsPl = new String[] { "ItemsAdder" };
-    private final String[] externalLib = new String[] { "ProtocolLib", "LocaleLib" };
+    private DraimShop plugin;
+    private final String[] landProtectionPlugins = new String[] { "WorldGuard" };
+    private final String[] customItemsPlugins = new String[] { "ItemsAdder" };
+    private final String[] externalLibraries = new String[] { "ProtocolLib", "LocaleLib" };
 
-    public ExternalPluginsSupport(DraimShop pl) {
-        this.pl = pl;
+    public ExternalPluginsSupport(DraimShop plugin) {
+        this.plugin = plugin;
     }
 
     public void init() {
-        for (String pl : customItemsPl) {
-            if (this.has(pl))
-                DraimShopLogger.sendMessage("Успешено взял за яички " + pl, LVL.SUCCESS);
+        for (String plugin : landProtectionPlugins) {
+            if (this.has(plugin))
+                DraimShopLogger.sendMessage("Успешный подхват плагина " + plugin, LVL.INFO);
         }
-        for (String pl : externalLib) {
-            if (this.has(pl))
-                DraimShopLogger.sendMessage("Успешено взял за яички " + pl, LVL.SUCCESS);
+        for (String plugin : customItemsPlugins) {
+            if (this.has(plugin))
+                DraimShopLogger.sendMessage("Успешный подхват плагина " + plugin, LVL.INFO);
+        }
+        for (String plugin : externalLibraries) {
+            if (this.has(plugin))
+                DraimShopLogger.sendMessage("Успешный подхват плагина " + plugin, LVL.SUCCESS);
         }
     }
 
-    private boolean has(String plName) {
-        return this.pl.getServer().getPluginManager().getPlugin(plName) != null;
+    private boolean has(String pluginName) {
+        return this.plugin.getServer().getPluginManager().getPlugin(pluginName) != null;
     }
 
     // #######################################################################################################################
-    // Внешние библиотеки
+    // ItemsAdder
     // #######################################################################################################################
 
-    public void sendMSG(Player player, MSG msg) {
-        if (msg.hasDisplayName()) {
-            player.sendMessage(msg.getMessage().replaceAll("\\{%item%\\}", msg.getItemName()));
-        } else if (msg.getItemName() == null) {
-            player.sendMessage(msg.getMessage().replaceAll("\\{%item%\\}", ""));
+    public HashMap<Integer, ItemStack> getModelDataToShopMapping() {
+        if (!has("ItemsAdder"))
+            return null;
+        HashMap<Integer, ItemStack> map = new HashMap<>();
+
+        Set<String> vm = this.plugin.getConfig().getConfigurationSection("vending-machine").getKeys(false);
+        for (String shop : vm) {
+            Integer customModelData = this.plugin.getConfig().getInt("vending-machine." + shop + ".model-data");
+            ItemStack item = CustomStack.getInstance("draimshop:" + shop + "_vending_machine").getItemStack();
+            map.put(customModelData, item);
+        }
+        Set<String> nb = this.plugin.getConfig().getConfigurationSection("briefcase").getKeys(false);
+        for (String shop : nb) {
+            Integer customModelData = this.plugin.getConfig().getInt("briefcase." + shop + ".model-data");
+            ItemStack item = CustomStack.getInstance("draimshop:" + shop + "_briefcase").getItemStack();
+            map.put(customModelData, item);
+        }
+
+        Integer defaultVM = this.plugin.getConfig().getInt("defaults.vending-machine");
+        ItemStack defaultVMItem = CustomStack.getInstance("draimshop:default_vending_machine").getItemStack();
+        map.put(defaultVM, defaultVMItem);
+        Integer defaultBriefcase = this.plugin.getConfig().getInt("defaults.briefcase");
+        ItemStack defaultBriefcaseItem = CustomStack.getInstance("draimshop:default_briefcase").getItemStack();
+        map.put(defaultBriefcase, defaultBriefcaseItem);
+
+        return map;
+    }
+
+    public Boolean isDefaultModel(ItemStack item) {
+        if (!has("ItemsAdder"))
+            return null;
+        String id = CustomStack.byItemStack(item).getNamespacedID();
+        return id.contains("default");
+    }
+
+    public ShopCreator getShopCreator(ItemStack item) {
+        if (!has("ItemsAdder"))
+            return null;
+        String id = CustomStack.byItemStack(item).getNamespacedID();
+        if (id.contains("vending_machine"))
+            return new VMCreator();
+        return new BCCreator();
+    }
+
+    // #######################################################################################################################
+    // Внешние либы
+    // #######################################################################################################################
+
+    public void sendMessage(Player player, MSG message) {
+        if (message.hasDisplayName()) {
+            player.sendMessage(message.getMessage().replaceAll("\\{%item%\\}", message.getItemName()));
+        } else if (message.getItemName() == null) {
+            player.sendMessage(message.getMessage().replaceAll("\\{%item%\\}", ""));
         } else if (!has("LocaleLib")) {
-            String itemName = WordUtils.capitalize(msg.getItemName().toLowerCase().replaceAll("_", " "));
-            player.sendMessage(msg.getMessage().replaceAll("\\{%item%\\}", itemName));
+            String itemName = WordUtils.capitalize(message.getItemName().toLowerCase().replaceAll("_", " "));
+            player.sendMessage(message.getMessage().replaceAll("\\{%item%\\}", itemName));
         } else {
-            LocaleManager localeManager = ((LocaleLib) this.pl.getServer().getPluginManager()
+            LocaleManager localeManager = ((LocaleLib) this.plugin.getServer().getPluginManager()
                     .getPlugin("LocaleLib")).getLocaleManager();
-            String rawMessage = msg.getMessage().replaceAll("\\{%item%\\}", "<item>");
+            String rawMessage = message.getMessage().replaceAll("\\{%item%\\}", "<item>");
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    localeManager.sendMessage(player, rawMessage, Material.matchMaterial(msg.getItemName()),
+                    localeManager.sendMessage(player, rawMessage, Material.matchMaterial(message.getItemName()),
                             (short) 0, null);
                 }
-            }.runTask(this.pl);
+            }.runTask(this.plugin);
         }
     }
 
@@ -125,7 +177,7 @@ public class ExternalPluginsSupport {
             Player player = evt.getPlayer();
             Object handle = CraftPlayer.getMethod("getHandle").invoke(player);
             Object channel;
-            if (Bukkit.getVersion().contains("1.17.1")) {
+            if (Bukkit.getVersion().contains("1.17")) {
                 Object playerConnection = handle.getClass().getField("b").get(handle);
                 Object networkManager = playerConnection.getClass().getField("a").get(playerConnection);
                 channel = networkManager.getClass().getField("k").get(networkManager);
@@ -176,55 +228,7 @@ public class ExternalPluginsSupport {
     }
 
     // #######################################################################################################################
-    // ItemsAdder обработчик
-    // #######################################################################################################################
-
-    public HashMap<Integer, ItemStack> getModelDataToShopMapping() {
-        if (!has("ItemsAdder"))
-            return null;
-        HashMap<Integer, ItemStack> map = new HashMap<>();
-
-        Set<String> vm = this.pl.getConfig().getConfigurationSection("vending-machine").getKeys(false);
-        for (String shop : vm) {
-            Integer customModelData = this.pl.getConfig().getInt("vending-machine." + shop + ".model-data");
-            ItemStack item = CustomStack.getInstance("draimshop:" + shop + "_vending_machine").getItemStack();
-            map.put(customModelData, item);
-        }
-        Set<String> nb = this.pl.getConfig().getConfigurationSection("briefcase").getKeys(false);
-        for (String shop : nb) {
-            Integer customModelData = this.pl.getConfig().getInt("briefcase." + shop + ".model-data");
-            ItemStack item = CustomStack.getInstance("draimshop:" + shop + "_briefcase").getItemStack();
-            map.put(customModelData, item);
-        }
-
-        Integer defaultVM = this.pl.getConfig().getInt("defaults.vending-machine");
-        ItemStack defaultVMItem = CustomStack.getInstance("draimshop:default_vending_machine").getItemStack();
-        map.put(defaultVM, defaultVMItem);
-        Integer defaultBriefcase = this.pl.getConfig().getInt("defaults.briefcase");
-        ItemStack defaultBriefcaseItem = CustomStack.getInstance("draimshop:default_briefcase").getItemStack();
-        map.put(defaultBriefcase, defaultBriefcaseItem);
-
-        return map;
-    }
-
-    public Boolean isDefaultModel(ItemStack item) {
-        if (!has("ItemsAdder"))
-            return null;
-        String id = CustomStack.byItemStack(item).getNamespacedID();
-        return id.contains("default");
-    }
-
-    public ShopCreator getShopCreator(ItemStack item) {
-        if (!has("ItemsAdder"))
-            return null;
-        String id = CustomStack.byItemStack(item).getNamespacedID();
-        if (id.contains("vending_machine"))
-            return new VMCreator();
-        return new BCCreator();
-    }
-
-    // #######################################################################################################################
-    // Разрешения на создание магазина, регистрируются: WG
+    // WorldGuard
     // #######################################################################################################################
 
     public boolean hasCreatePerms(Location location, Player player) {
@@ -248,7 +252,7 @@ public class ExternalPluginsSupport {
     }
 
     // #######################################################################################################################
-    // Разрешения на удаление магазина, регистрируются: WG
+    // WorldGuard
     // #######################################################################################################################
 
     public boolean hasRemovePerms(Location location, Player player) {
