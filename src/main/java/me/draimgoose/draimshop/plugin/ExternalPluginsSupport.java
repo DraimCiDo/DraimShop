@@ -52,7 +52,7 @@ public class ExternalPluginsSupport {
     public void init() {
         for (String pl : customItemsPl) {
             if (this.has(pl))
-                DraimShopLogger.sendMSG("Успешено взял за яички" + pl, LVL.SUCCESS);
+                DraimShopLogger.sendMSG("Успешено взял за яички " + pl, LVL.SUCCESS);
         }
         for (String pl : externalLib) {
             if (this.has(pl))
@@ -162,7 +162,7 @@ public class ExternalPluginsSupport {
     }
 
     private Class<?> getNMSClass(String className) throws ClassNotFoundException {
-        if (Bukkit.getVersion().contains("1.17.1")) {
+        if (Bukkit.getVersion().contains("1.17")) {
             return Class.forName("net.minecraft.network.protocol.game." + className);
         } else {
             return Class.forName("net.minecraft.server."
