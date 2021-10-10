@@ -48,13 +48,13 @@ public abstract class ShopGUI {
         if (bal < totalCost) {
             MSG message = MsgUtils.getMessage(LangUtils.getString("customer-buy-fail-money"), ownerID,
                     viewer, totalCost, item, amount);
-            DraimShop.getPlugin().support().sendMSG(viewer, message);
+            DraimShop.getPlugin().support().sendMessage(viewer, message);
             return false;
         } else if (this.isAdmin) {
             economy.withdrawPlayer(viewer, totalCost);
             MSG message = MsgUtils.getMessage(LangUtils.getString("customer-buy-success-customer"), ownerID,
                     viewer, totalCost, item, amount);
-            DraimShop.getPlugin().support().sendMSG(viewer, message);
+            DraimShop.getPlugin().support().sendMessage(viewer, message);
             return true;
         } else {
             OfflinePlayer owner = Bukkit.getOfflinePlayer(UUID.fromString(this.ownerID));
@@ -62,12 +62,12 @@ public abstract class ShopGUI {
             economy.depositPlayer(owner, totalCost);
             MSG message = MsgUtils.getMessage(LangUtils.getString("customer-buy-success-customer"), ownerID,
                     viewer, totalCost, item, amount);
-            DraimShop.getPlugin().support().sendMSG(viewer, message);
+            DraimShop.getPlugin().support().sendMessage(viewer, message);
 
             if (owner.isOnline()) {
                 MSG ownerMessage = MsgUtils.getMessage(LangUtils.getString("customer-buy-success-owner"),
                         ownerID, viewer, totalCost, item, amount);
-                DraimShop.getPlugin().support().sendMSG(owner.getPlayer(), ownerMessage);
+                DraimShop.getPlugin().support().sendMessage(owner.getPlayer(), ownerMessage);
             } else {
                 CompletableFuture.runAsync(() -> DraimShop.getPlugin().getDB().storeMessage(ownerID, viewer,
                         true, item, amount, totalCost));
@@ -84,25 +84,25 @@ public abstract class ShopGUI {
         if (bal < totalCost) {
             MSG message = MsgUtils.getMessage(LangUtils.getString("customer-sell-fail-money"), ownerID,
                     viewer, totalCost, item, amount);
-            DraimShop.getPlugin().support().sendMSG(viewer, message);
+            DraimShop.getPlugin().support().sendMessage(viewer, message);
             return false;
         } else if (this.isAdmin) {
             economy.depositPlayer(viewer, totalCost);
             MSG message = MsgUtils.getMessage(LangUtils.getString("customer-sell-success-customer"),
                     ownerID, viewer, totalCost, item, amount);
-            DraimShop.getPlugin().support().sendMSG(viewer, message);
+            DraimShop.getPlugin().support().sendMessage(viewer, message);
             return true;
         } else {
             economy.withdrawPlayer(owner, totalCost);
             economy.depositPlayer(viewer, totalCost);
             MSG message = MsgUtils.getMessage(LangUtils.getString("customer-sell-success-customer"),
                     ownerID, viewer, totalCost, item, amount);
-            DraimShop.getPlugin().support().sendMSG(viewer, message);
+            DraimShop.getPlugin().support().sendMessage(viewer, message);
 
             if (owner.isOnline()) {
                 MSG ownerMessage = MsgUtils.getMessage(LangUtils.getString("customer-sell-success-owner"),
                         ownerID, viewer, totalCost, item, amount);
-                DraimShop.getPlugin().support().sendMSG(owner.getPlayer(), ownerMessage);
+                DraimShop.getPlugin().support().sendMessage(owner.getPlayer(), ownerMessage);
             } else {
                 CompletableFuture.runAsync(() -> DraimShop.getPlugin().getDB().storeMessage(ownerID, viewer,
                         false, item, amount, totalCost));

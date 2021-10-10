@@ -104,7 +104,7 @@ public class BriefcaseGUI extends ShopGUI {
         if (!pInventory.containsAtLeast(item, amount)) {
             MSG message = MsgUtils.getMessage(LangUtils.getString("customer-sell-fail-item"), ownerID,
                     viewer, 0, item, amount);
-            DraimShop.getPlugin().support().sendMSG(viewer, message);
+            DraimShop.getPlugin().support().sendMessage(viewer, message);
             return;
         }
 
@@ -151,7 +151,7 @@ public class BriefcaseGUI extends ShopGUI {
         if (this.quantity < amount) {
             MSG message = MsgUtils.getMessage(LangUtils.getString("customer-buy-fail-item"), ownerID,
                     viewer, 0, item, amount);
-            DraimShop.getPlugin().support().sendMSG(viewer, message);
+            DraimShop.getPlugin().support().sendMessage(viewer, message);
             return;
         }
         Inventory pInventory = viewer.getInventory();
@@ -159,7 +159,7 @@ public class BriefcaseGUI extends ShopGUI {
         if (!UIUtils.hasSpace(pInventory, item, amount)) {
             MSG message = MsgUtils.getMessage(LangUtils.getString("customer-buy-fail-space"), ownerID,
                     viewer, 0, item, amount);
-            DraimShop.getPlugin().support().sendMSG(viewer, message);
+            DraimShop.getPlugin().support().sendMessage(viewer, message);
         } else {
             List<ItemStack> stacks = new ArrayList<>();
             int stackNumber = 0;
@@ -194,7 +194,7 @@ public class BriefcaseGUI extends ShopGUI {
         if (!pInventory.containsAtLeast(item, amount)) {
             MSG message = MsgUtils.getMessage(LangUtils.getString("customer-sell-fail-item"), ownerID,
                     viewer, 0, item, amount);
-            DraimShop.getPlugin().support().sendMSG(viewer, message);
+            DraimShop.getPlugin().support().sendMessage(viewer, message);
             return;
         }
 
@@ -244,7 +244,7 @@ public class BriefcaseGUI extends ShopGUI {
         if (this.quantity < amount && !this.isAdmin) {
             MSG message = MsgUtils.getMessage(LangUtils.getString("customer-buy-fail-item"), ownerID,
                     viewer, 0, item, amount);
-            DraimShop.getPlugin().support().sendMSG(viewer, message);
+            DraimShop.getPlugin().support().sendMessage(viewer, message);
             return;
         }
         Inventory pInventory = viewer.getInventory();
@@ -253,7 +253,7 @@ public class BriefcaseGUI extends ShopGUI {
         if (!UIUtils.hasSpace(pInventory, item, amount)) {
             MSG message = MsgUtils.getMessage(LangUtils.getString("customer-buy-fail-space"), ownerID,
                     viewer, totalCost, item, amount);
-            DraimShop.getPlugin().support().sendMSG(viewer, message);
+            DraimShop.getPlugin().support().sendMessage(viewer, message);
         } else if (super.ownerSell(amount, totalCost, item)) {
             List<ItemStack> stacks = new ArrayList<>();
             int stackNumber = 0;

@@ -113,7 +113,7 @@ public class VMGUI extends ShopGUI {
         } else if (!inventory.containsAtLeast(item, amount) && !this.isAdmin) {
             MSG message = MsgUtils.getMessage(LangUtils.getString("customer-buy-fail-item"), ownerID,
                     viewer, 0, item, amount);
-            DraimShop.getPlugin().support().sendMSG(viewer, message);
+            DraimShop.getPlugin().support().sendMessage(viewer, message);
             return;
         }
 
@@ -125,7 +125,7 @@ public class VMGUI extends ShopGUI {
         if (!UIUtils.hasSpace(pInventory, item, amount)) {
             MSG message = MsgUtils.getMessage(LangUtils.getString("customer-buy-fail-space"), ownerID,
                     viewer, totalCost, item, amount);
-            DraimShop.getPlugin().support().sendMSG(viewer, message);
+            DraimShop.getPlugin().support().sendMessage(viewer, message);
         } else if (super.ownerSell(amount, totalCost, item)) {
             item.setAmount(amount);
             ItemStack temp = item.clone();

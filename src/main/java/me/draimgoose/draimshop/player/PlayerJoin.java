@@ -16,7 +16,7 @@ public class PlayerJoin implements Listener {
             DraimShop plugin = DraimShop.getPlugin();
             List<MsgUtils.MSG> messages = plugin.getDB()
                     .getMessages(evt.getPlayer().getUniqueId().toString());
-            messages.forEach(e -> plugin.support().sendMSG(evt.getPlayer(), e));
+            messages.forEach(e -> plugin.support().sendMessage(evt.getPlayer(), e));
         });
     }
 }
