@@ -19,8 +19,8 @@ public class MsgUtils {
         private String itemName;
         private boolean hasDisplayName;
 
-        public MSG(String message, String itemName, boolean hasDisplayName) {
-            this.msg = message;
+        public MSG(String msg, String itemName, boolean hasDisplayName) {
+            this.msg = msg;
             this.itemName = itemName;
             this.hasDisplayName = hasDisplayName;
         }
@@ -38,12 +38,14 @@ public class MsgUtils {
         }
     }
 
-    public static MSG getMSG(String msg, String ownerID, OfflinePlayer viewer, double total, String itemName, boolean hasDisplayName, int amount) {
+    public static MSG getMSG(String msg, String ownerID, OfflinePlayer viewer, double total,
+                                     String itemName, boolean hasDisplayName, int amount) {
         String rawMSG = convertMSG(msg, ownerID, viewer, total, amount);
         return new MSG(rawMSG, itemName, hasDisplayName);
     }
 
-    public static MSG getMSG(String msg, String ownerID, OfflinePlayer viewer, double total, ItemStack item, int amount) {
+    public static MSG getMSG(String msg, String ownerID, OfflinePlayer viewer, double total, ItemStack item,
+                                     int amount) {
         String rawMSG = convertMSG(msg, ownerID, viewer, total, amount);
         if (item == null) {
             return new MSG(rawMSG, null, false);
@@ -54,7 +56,8 @@ public class MsgUtils {
         }
     }
 
-    private static String convertMSG(String msg, String ownerID, OfflinePlayer viewer, double total, int amount) {
+    private static String convertMSG(String msg, String ownerID, OfflinePlayer viewer, double total,
+                                         int amount) {
         msg = msg.replaceAll("\\{%customer%\\}", viewer == null ? "" : viewer.getName());
         msg = msg.replaceAll("\\{%owner%\\}", Bukkit.getOfflinePlayer(UUID.fromString(ownerID)).getName());
         msg = msg.replaceAll("\\{%total%\\}", Matcher.quoteReplacement(getReadablePriceTag(total)));
@@ -67,14 +70,16 @@ public class MsgUtils {
     }
 
     @Deprecated
-    public static String convertMSG(String msg, String ownerID, Player viewer, double total, ItemStack item, int amount) {
+    public static String convertMSG(String msg, String ownerID, Player viewer, double total, ItemStack item,
+                                        int amount) {
         ItemMeta meta = item.getItemMeta();
         String itemName = item == null ? "" : meta.hasDisplayName() ? meta.getDisplayName() : item.getType().toString();
         return convertMSG(msg, ownerID, viewer, total, itemName, amount);
     }
 
     @Deprecated
-    public static String convertSG(String msg, String ownerID, OfflinePlayer viewer, double total, String itemName, int amount) {
+    public static String convertMSG(String msg, String ownerID, OfflinePlayer viewer, double total,
+                                        String itemName, int amount) {
         msg = msg.replaceAll("\\{%customer%\\}", viewer == null ? "" : viewer.getName());
         msg = msg.replaceAll("\\{%owner%\\}", Bukkit.getOfflinePlayer(UUID.fromString(ownerID)).getName());
         msg = msg.replaceAll("\\{%total%\\}", Matcher.quoteReplacement(getReadablePriceTag(total)));
