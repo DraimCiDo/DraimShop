@@ -62,7 +62,7 @@ public class SellConvFactory extends ConversationFactory {
                     player.sendMessage(LangUtils.getString("invalid-input"));
                 }
             } else {
-                context.getForWhom().sendRawMessage("Эта команда доступна только игрокам.");
+                context.getForWhom().sendRawMessage("Это команда только для игроков.");
             }
             return END_OF_CONVERSATION;
         }

@@ -19,8 +19,7 @@ public class PruchaseConvFactory extends ConversationFactory {
             @Override
             public void conversationAbandoned(ConversationAbandonedEvent abandonedEvent) {
                 ConversationCanceller canceller = abandonedEvent.getCanceller();
-                Player player;
-                player = (Player) abandonedEvent.getContext().getForWhom();
+                Player player = (Player) abandonedEvent.getContext().getForWhom();
                 if (canceller != null) {
                     player.sendMessage(LangUtils.getString("purchase-convo-cancelled"));
                 }
@@ -56,9 +55,10 @@ public class PruchaseConvFactory extends ConversationFactory {
                     player.sendMessage(LangUtils.getString("invalid-input"));
                 }
             } else {
-                context.getForWhom().sendRawMessage("Эта команда доступна только для игроков.");
+                context.getForWhom().sendRawMessage("Это команда только для игроков.");
             }
             return END_OF_CONVERSATION;
         }
     }
+
 }

@@ -58,7 +58,7 @@ public class SetPriceConvFactory extends ConversationFactory {
                     player.sendMessage(LangUtils.getString("invalid-input"));
                 }
             } else {
-                context.getForWhom().sendRawMessage("This is a player-only command.");
+                context.getForWhom().sendRawMessage("Это команда только для игроков.");
             }
             return END_OF_CONVERSATION;
         }
