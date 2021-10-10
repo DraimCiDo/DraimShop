@@ -16,7 +16,6 @@ import java.util.Optional;
 
 public class PlayerState {
     private static HashMap<Player, PlayerState> playerStates = new HashMap<>();
-
     private ShopGUI shopGUI;
     private ItemStack transactionItem;
     private Conversation conversation;
@@ -24,7 +23,6 @@ public class PlayerState {
     private BukkitRunnable unlockingShop;
     private ItemStack unlockingShopItem;
     private CreationGUI creationGUI;
-
     private PlayerState(Player player) {
         this.player = player;
         playerStates.put(player, this);

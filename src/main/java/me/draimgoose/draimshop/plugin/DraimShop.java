@@ -4,10 +4,7 @@ import me.draimgoose.draimshop.crate.UnlockShop;
 import me.draimgoose.draimshop.database.DB;
 import me.draimgoose.draimshop.database.SQLite;
 import me.draimgoose.draimshop.gui.CreationGUI;
-import me.draimgoose.draimshop.player.PlayerJoin;
-import me.draimgoose.draimshop.player.PlayerLeave;
-import me.draimgoose.draimshop.player.PlayerMove;
-import me.draimgoose.draimshop.player.PlayerTeleport;
+import me.draimgoose.draimshop.player.*;
 import me.draimgoose.draimshop.plugin.DraimShopLogger.LVL;
 import me.draimgoose.draimshop.shop.ShopCreation;
 import me.draimgoose.draimshop.shop.ShopExit;
@@ -25,26 +22,27 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class DraimShop extends JavaPlugin {
-    private static DraimShop plInst;
-    private static DB db;
-    private Economy eco;
+    private static DraimShop pluginInstance;
+    private Economy economy;
+    private DB database;
     private ExternalPluginsSupport support;
 
     @Override
     public void onEnable() {
-        plInst = this;
+        pluginInstance = this;
+
         if (!setUpEco()) {
-            DraimShopLogger.sendMSG("Опа, а где Vault сука? Выключаю твою тарахтелку..", LVL.FAIL);
+            DraimShopLogger.sendMessage("Подхват Vault не сработал! Отключение плагина...", LVL.FAIL);
             getServer().getPluginManager().disablePlugin(this);
             return;
         } else {
-            DraimShopLogger.sendMSG("Схватил за яички Vault", LVL.SUCCESS);
+            DraimShopLogger.sendMessage("Успешный подхват Vault.", LVL.SUCCESS);
         }
 
         this.support = new ExternalPluginsSupport(this);
         this.support.init();
 
-        if(!this.getDataFolder().exists()) {
+        if (!this.getDataFolder().exists()) {
             try {
                 this.getDataFolder().mkdir();
             } catch (Exception e) {
@@ -69,8 +67,8 @@ public final class DraimShop extends JavaPlugin {
         mainCommand.setExecutor(new DSComdExec());
         mainCommand.setTabCompleter(new AutoComplete());
 
-        this.db = new SQLite(this);
-        this.db.load();
+        this.database = new SQLite(this);
+        this.database.load();
 
         saveDefaultConfig();
         LangUtils.loadLangConfig();
@@ -79,6 +77,8 @@ public final class DraimShop extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        PlayerState.clearAllShopInteractions();
+        super.onDisable();
     }
 
     private boolean setUpEco() {
@@ -89,22 +89,22 @@ public final class DraimShop extends JavaPlugin {
             if (rsp == null) {
                 return false;
             } else {
-                eco = rsp.getProvider();
-                return eco != null;
+                economy = rsp.getProvider();
+                return economy != null;
             }
         }
     }
 
     public static DraimShop getPlugin() {
-        return plInst;
-    }
-
-    public DB getDB() {
-        return this.db;
+        return pluginInstance;
     }
 
     public Economy getEco() {
-        return this.eco;
+        return this.economy;
+    }
+
+    public DB getDB() {
+        return this.database;
     }
 
     public ExternalPluginsSupport support() {

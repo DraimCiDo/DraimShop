@@ -52,11 +52,11 @@ public class ExternalPluginsSupport {
     public void init() {
         for (String pl : customItemsPl) {
             if (this.has(pl))
-                DraimShopLogger.sendMSG("Успешено взял за яички " + pl, LVL.SUCCESS);
+                DraimShopLogger.sendMessage("Успешено взял за яички " + pl, LVL.SUCCESS);
         }
         for (String pl : externalLib) {
             if (this.has(pl))
-                DraimShopLogger.sendMSG("Успешено взял за яички " + pl, LVL.SUCCESS);
+                DraimShopLogger.sendMessage("Успешено взял за яички " + pl, LVL.SUCCESS);
         }
     }
 
@@ -70,16 +70,16 @@ public class ExternalPluginsSupport {
 
     public void sendMSG(Player player, MSG msg) {
         if (msg.hasDisplayName()) {
-            player.sendMessage(msg.getMSG().replaceAll("\\{%item%\\}", msg.getItemName()));
+            player.sendMessage(msg.getMessage().replaceAll("\\{%item%\\}", msg.getItemName()));
         } else if (msg.getItemName() == null) {
-            player.sendMessage(msg.getMSG().replaceAll("\\{%item%\\}", ""));
+            player.sendMessage(msg.getMessage().replaceAll("\\{%item%\\}", ""));
         } else if (!has("LocaleLib")) {
             String itemName = WordUtils.capitalize(msg.getItemName().toLowerCase().replaceAll("_", " "));
-            player.sendMessage(msg.getMSG().replaceAll("\\{%item%\\}", itemName));
+            player.sendMessage(msg.getMessage().replaceAll("\\{%item%\\}", itemName));
         } else {
             LocaleManager localeManager = ((LocaleLib) this.pl.getServer().getPluginManager()
                     .getPlugin("LocaleLib")).getLocaleManager();
-            String rawMessage = msg.getMSG().replaceAll("\\{%item%\\}", "<item>");
+            String rawMessage = msg.getMessage().replaceAll("\\{%item%\\}", "<item>");
             new BukkitRunnable() {
                 @Override
                 public void run() {

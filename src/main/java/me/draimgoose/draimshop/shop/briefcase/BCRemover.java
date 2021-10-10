@@ -1,6 +1,7 @@
 package me.draimgoose.draimshop.shop.briefcase;
 
 import me.draimgoose.draimshop.plugin.DraimShopLogger;
+import me.draimgoose.draimshop.plugin.DraimShopLogger.LVL;
 import me.draimgoose.draimshop.shop.ShopRemover;
 import me.draimgoose.draimshop.utils.LangUtils;
 import org.bukkit.Bukkit;
@@ -28,16 +29,16 @@ public class BCRemover extends ShopRemover {
         ItemStack placeHolder = armorStand.getEquipment().getChestplate();
 
         if (placeHolder == null || placeHolder.getType() == Material.AIR) {
-            DraimShopLogger.sendMSG(
-                    "Попытка снять портфель на " + location + " с пропавшим предметов.",
-                    DraimShopLogger.LVL.FAIL);
+            DraimShopLogger.sendMessage(
+                    "Попытка удалить портфель на " + location + " с пропавшим предметом из сундука! Сообщите об этой ошибке!",
+                    LVL.FAIL);
         } else {
             ItemMeta meta = placeHolder.getItemMeta();
             if (meta.hasDisplayName()) {
                 this.ownerUUID = UUID.fromString(meta.getDisplayName());
             } else {
-                DraimShopLogger.sendMSG("Попытка снять портфель на " + location
-                        + " с пропавшим лором у предмета!", DraimShopLogger.LVL.FAIL);
+                DraimShopLogger.sendMessage("Попытка удалить портфель на " + location
+                        + " с сундуком с отсутствующим именем! Сообщите об этой ошибке!!", LVL.FAIL);
                 return;
             }
 

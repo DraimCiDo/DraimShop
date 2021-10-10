@@ -1,6 +1,7 @@
 package me.draimgoose.draimshop.shop.vm;
 
 import me.draimgoose.draimshop.plugin.DraimShopLogger;
+import me.draimgoose.draimshop.plugin.DraimShopLogger.LVL;
 import me.draimgoose.draimshop.shop.ShopRemover;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -28,15 +29,15 @@ public class VMRemover extends ShopRemover {
         ItemStack chestItem = armorStand.getEquipment().getChestplate();
         if (chestItem == null || !(chestItem.getItemMeta() instanceof BlockStateMeta)
                 || !(((BlockStateMeta) chestItem.getItemMeta()).getBlockState() instanceof ShulkerBox)) {
-            DraimShopLogger.sendMSG("Попытка удалить торговый автомат в " + bottom
-                    + " с пропавшим шалекром! Сообщите об этой ошибке!", DraimShopLogger.LVL.FAIL);
+            DraimShopLogger.sendMessage("Не удалось удалить торговый автомат " + bottom
+                    + " Не найден Шалкер-Бокс. Сообщите администрации", LVL.FAIL);
         } else {
             meta = (BlockStateMeta) chestItem.getItemMeta();
             if (meta.hasDisplayName()) {
                 this.ownerUUID = UUID.fromString(meta.getDisplayName());
             } else {
-                DraimShopLogger.sendMSG("Попытка удалить торговый автомат в " + bottom
-                        + " с шалкером сотсутствующим отображаемым именем! Сообщите об этой ошибке!", DraimShopLogger.LVL.FAIL);
+                DraimShopLogger.sendMessage("Не удалось удалить тороговый автомат " + bottom
+                        + " не найден Шалкер-Бокс с именем. Сообщите администрации!", LVL.FAIL);
             }
         }
     }

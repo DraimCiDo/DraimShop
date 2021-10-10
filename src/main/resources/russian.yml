@@ -22,10 +22,10 @@ vending-machine-customer: Торговый автомат
 vending-machine-owner: Настройки торогового автомата
 
 # Титл портфелей, когда игрок открывает GUI с ним
-newt-briefcase-customer: Портфель
+briefcase-customer: Портфель
 
 # Титл портфелей, когда его владелец открывает GUI с ним
-newt-briefcase-owner: Настройки портфеля
+briefcase-owner: Настройки портфеля
 
 # Слова, используемые в ценниках (заглавные буквы, когда это применимо)
 price-tag:

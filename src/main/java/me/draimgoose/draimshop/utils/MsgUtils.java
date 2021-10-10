@@ -15,18 +15,18 @@ public class MsgUtils {
     }
 
     public static class MSG {
-        private String msg;
+        private String message;
         private String itemName;
         private boolean hasDisplayName;
 
-        public MSG(String msg, String itemName, boolean hasDisplayName) {
-            this.msg = msg;
+        public MSG(String message, String itemName, boolean hasDisplayName) {
+            this.message = message;
             this.itemName = itemName;
             this.hasDisplayName = hasDisplayName;
         }
 
-        public String getMSG() {
-            return this.msg;
+        public String getMessage() {
+            return this.message;
         }
 
         public String getItemName() {
@@ -38,31 +38,31 @@ public class MsgUtils {
         }
     }
 
-    public static MSG getMSG(String msg, String ownerID, OfflinePlayer viewer, double total,
+    public static MSG getMessage(String message, String ownerID, OfflinePlayer viewer, double total,
                                      String itemName, boolean hasDisplayName, int amount) {
-        String rawMSG = convertMSG(msg, ownerID, viewer, total, amount);
-        return new MSG(rawMSG, itemName, hasDisplayName);
+        String rawMessage = convertMessage(message, ownerID, viewer, total, amount);
+        return new MSG(rawMessage, itemName, hasDisplayName);
     }
 
-    public static MSG getMSG(String msg, String ownerID, OfflinePlayer viewer, double total, ItemStack item,
+    public static MSG getMessage(String message, String ownerID, OfflinePlayer viewer, double total, ItemStack item,
                                      int amount) {
-        String rawMSG = convertMSG(msg, ownerID, viewer, total, amount);
+        String rawMessage = convertMessage(message, ownerID, viewer, total, amount);
         if (item == null) {
-            return new MSG(rawMSG, null, false);
+            return new MSG(rawMessage, null, false);
         } else {
             ItemMeta meta = item.getItemMeta();
             String itemName = meta.hasDisplayName() ? meta.getDisplayName() : item.getType().toString();
-            return new MSG(rawMSG, itemName, meta.hasDisplayName());
+            return new MSG(rawMessage, itemName, meta.hasDisplayName());
         }
     }
 
-    private static String convertMSG(String msg, String ownerID, OfflinePlayer viewer, double total,
+    private static String convertMessage(String message, String ownerID, OfflinePlayer viewer, double total,
                                          int amount) {
-        msg = msg.replaceAll("\\{%customer%\\}", viewer == null ? "" : viewer.getName());
-        msg = msg.replaceAll("\\{%owner%\\}", Bukkit.getOfflinePlayer(UUID.fromString(ownerID)).getName());
-        msg = msg.replaceAll("\\{%total%\\}", Matcher.quoteReplacement(getReadablePriceTag(total)));
-        msg = msg.replaceAll("\\{%amount%\\}", "" + amount);
-        return msg;
+        message = message.replaceAll("\\{%customer%\\}", viewer == null ? "" : viewer.getName());
+        message = message.replaceAll("\\{%owner%\\}", Bukkit.getOfflinePlayer(UUID.fromString(ownerID)).getName());
+        message = message.replaceAll("\\{%total%\\}", Matcher.quoteReplacement(getReadablePriceTag(total)));
+        message = message.replaceAll("\\{%amount%\\}", "" + amount);
+        return message;
     }
 
     public static String getReadablePriceTag(double number) {
@@ -70,22 +70,21 @@ public class MsgUtils {
     }
 
     @Deprecated
-    public static String convertMSG(String msg, String ownerID, Player viewer, double total, ItemStack item,
+    public static String convertMessage(String message, String ownerID, Player viewer, double total, ItemStack item,
                                         int amount) {
         ItemMeta meta = item.getItemMeta();
         String itemName = item == null ? "" : meta.hasDisplayName() ? meta.getDisplayName() : item.getType().toString();
-        return convertMSG(msg, ownerID, viewer, total, itemName, amount);
+        return convertMessage(message, ownerID, viewer, total, itemName, amount);
     }
-
     @Deprecated
-    public static String convertMSG(String msg, String ownerID, OfflinePlayer viewer, double total,
+    public static String convertMessage(String message, String ownerID, OfflinePlayer viewer, double total,
                                         String itemName, int amount) {
-        msg = msg.replaceAll("\\{%customer%\\}", viewer == null ? "" : viewer.getName());
-        msg = msg.replaceAll("\\{%owner%\\}", Bukkit.getOfflinePlayer(UUID.fromString(ownerID)).getName());
-        msg = msg.replaceAll("\\{%total%\\}", Matcher.quoteReplacement(getReadablePriceTag(total)));
-        msg = msg.replaceAll("\\{%item%\\}", itemName == null ? "" : itemName);
-        msg = msg.replaceAll("\\{%amount%\\}", "" + amount);
-        return msg;
+        message = message.replaceAll("\\{%customer%\\}", viewer == null ? "" : viewer.getName());
+        message = message.replaceAll("\\{%owner%\\}", Bukkit.getOfflinePlayer(UUID.fromString(ownerID)).getName());
+        message = message.replaceAll("\\{%total%\\}", Matcher.quoteReplacement(getReadablePriceTag(total)));
+        message = message.replaceAll("\\{%item%\\}", itemName == null ? "" : itemName);
+        message = message.replaceAll("\\{%amount%\\}", "" + amount);
+        return message;
     }
 
     @Deprecated

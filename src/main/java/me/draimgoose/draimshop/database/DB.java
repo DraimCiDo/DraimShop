@@ -2,7 +2,7 @@ package me.draimgoose.draimshop.database;
 
 import me.draimgoose.draimshop.plugin.DraimShop;
 import me.draimgoose.draimshop.plugin.DraimShopLogger;
-import me.draimgoose.draimshop.plugin.DraimShopLogger.LVL;
+import me.draimgoose.draimshop.utils.MsgUtils.MSG;
 import me.draimgoose.draimshop.utils.LangUtils;
 import me.draimgoose.draimshop.utils.MsgUtils;
 import org.bukkit.Bukkit;
@@ -45,13 +45,15 @@ public abstract class DB {
             ps = connection.prepareStatement("SELECT * FROM " + shopsUnlocked);
             rs = ps.executeQuery();
             close(ps, rs);
+            // 1.5 update adds an extra column, drop table if column does not already exist
             ps = connection.prepareStatement("SELECT * FROM " + pendingTransactions);
             rs = ps.executeQuery();
             int columnCount = rs.getMetaData().getColumnCount();
             close(ps, rs);
             if (columnCount <= 6) {
-                DraimShopLogger.sendMSG(
-                        "Отсутствует обязательная колонка в " + pendingTransactions + " таблица, воссоздание таблицы...", LVL.WARN);
+                DraimShopLogger.sendMessage(
+                        "Отсутствует обязательная колонка в " + pendingTransactions + " таблице, пересоздание таблицы...",
+                        DraimShopLogger.LVL.WARN);
                 ps = connection.prepareStatement("DROP table " + pendingTransactions);
                 ps.executeUpdate();
                 close(ps, connection);
@@ -170,7 +172,8 @@ public abstract class DB {
         }
     }
 
-    public void storeMessage(String ownerID, Player customer, boolean selling, ItemStack item, int amount, double totalCost) {
+    public void storeMessage(String ownerID, Player customer, boolean selling, ItemStack item, int amount,
+                             double totalCost) {
         Connection conn = null;
         PreparedStatement ps = null;
         int sell = selling ? 1 : 0;
@@ -209,12 +212,12 @@ public abstract class DB {
                 int amount = rs.getInt("amount");
                 double totalCost = rs.getDouble("total_cost");
                 boolean hasDisplayName = rs.getBoolean("has_display_name");
-                MsgUtils.MSG message;
+                MSG message;
                 if (rs.getBoolean("selling")) {
-                    message = MsgUtils.getMSG(sellMessage, ownerID, customer, totalCost, itemName,
+                    message = MsgUtils.getMessage(sellMessage, ownerID, customer, totalCost, itemName,
                             hasDisplayName, amount);
                 } else {
-                    message = MsgUtils.getMSG(buyMessage, ownerID, customer, totalCost, itemName,
+                    message = MsgUtils.getMessage(buyMessage, ownerID, customer, totalCost, itemName,
                             hasDisplayName, amount);
                 }
                 messages.add(message);

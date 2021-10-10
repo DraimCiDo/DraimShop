@@ -44,14 +44,14 @@ public class ShopUtils {
                 ItemMeta meta = item.getItemMeta();
                 if (!meta.hasDisplayName()) {
                     Location standLoc = armorStand.getLocation();
-                    DraimShopLogger.sendMSG("DraimShop без имени владельца, обнаружен на " + standLoc + "!", LVL.FAIL);
+                    DraimShopLogger.sendMessage("DraimShop без имени владельца, обнаружен на " + standLoc + "!", LVL.FAIL);
                     return null;
                 }
                 String ownerUUID = meta.getDisplayName();
                 return Bukkit.getOfflinePlayer(UUID.fromString(ownerUUID));
             } else {
                 Location standLoc = armorStand.getLocation();
-                DraimShopLogger.sendMSG("DraimShop без предмета владельца, обнаружен на " + standLoc + "!", LVL.FAIL);
+                DraimShopLogger.sendMessage("DraimShop без предмета владельца, обнаружен на " + standLoc + "!", LVL.FAIL);
                 return null;
             }
         }

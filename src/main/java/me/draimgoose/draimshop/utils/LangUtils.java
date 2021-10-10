@@ -12,36 +12,35 @@ import java.io.File;
 import java.io.IOException;
 
 public class LangUtils {
-    private static String lang;
-    private static File langFile;
-    private static FileConfiguration langConfig;
+    private static String language;
+    private static File languageFile;
+    private static FileConfiguration languageConfiguration;
 
     public static void loadLangConfig() {
-        Plugin pl = DraimShop.getPlugin();
-        lang = pl.getConfig().getString("lang");
+        Plugin plugin = DraimShop.getPlugin();
+        language = plugin.getConfig().getString("lang");
 
-        File langFolder = new File(pl.getDataFolder(), "lang");
-        File tempResource = new File(pl.getDataFolder(), lang + ".yml");
+        File languageFolder = new File(plugin.getDataFolder(), "lang");
+        File tempResource = new File(plugin.getDataFolder(), language + ".yml");
 
-        langFile = new File(langFolder, lang + ".yml");
-        langFile.getParentFile().mkdirs();
+        languageFile = new File(languageFolder, language + ".yml");
+        languageFile.getParentFile().mkdirs();
 
-        if (pl.getResource(lang + ".yml") != null) {
-            pl.saveResource(lang + ".yml", true);
-            tempResource.renameTo(langFile);
+        if (plugin.getResource(language + ".yml") != null) {
+            plugin.saveResource(language + ".yml", true);
+            tempResource.renameTo(languageFile);
         }
 
-        langConfig = new YamlConfiguration();
+        languageConfiguration = new YamlConfiguration();
         try {
-            langConfig.load(langFile);
-            DraimShopLogger.sendMSG("Используется язык: " + lang, LVL.INFO.INFO);
+            languageConfiguration.load(languageFile);
+            DraimShopLogger.sendMessage("Используется язык: " + language, LVL.INFO);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
     }
 
     public static String getString(String node) {
-        return langConfig.getString(node);
+        return languageConfiguration.getString(node);
     }
-
 }

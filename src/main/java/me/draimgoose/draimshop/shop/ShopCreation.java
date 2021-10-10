@@ -183,7 +183,7 @@ public class ShopCreation extends DSComd implements Listener {
         }
 
         private NoSuchShopException() {
-            super("Выбранный товар не соответствовал ни одному виду магазинов!");
+            super("Выбранный товар не соответствовал ни одному виду магазинов!!");
         }
     }
 }

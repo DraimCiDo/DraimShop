@@ -3,6 +3,7 @@ package me.draimgoose.draimshop.gui;
 import me.draimgoose.draimshop.player.PlayerState;
 import me.draimgoose.draimshop.plugin.DraimShop;
 import me.draimgoose.draimshop.plugin.DraimShopLogger;
+import me.draimgoose.draimshop.plugin.DraimShopLogger.LVL;
 import me.draimgoose.draimshop.utils.LangUtils;
 import me.draimgoose.draimshop.utils.UIUtils;
 import org.bukkit.Bukkit;
@@ -47,16 +48,16 @@ public class CreationGUI {
         for (String e : vm) {
             String customModelName = DraimShop.getPlugin().getConfig().getString("vending-machine." + e + ".name");
             if (customModelName == null) {
-                DraimShopLogger.sendMSG(
-                        "Имя не установлено, по крайней мере для одного из торговых автоматов! Отключение плагина...", DraimShopLogger.LVL.FAIL);
+                DraimShopLogger.sendMessage(
+                        "Имя не установлено для одного из торговых автоматов! Отключение плагина...", LVL.FAIL);
                 Bukkit.getPluginManager().disablePlugin(DraimShop.getPlugin());
             }
             names.add(customModelName);
             Integer customModelData = DraimShop.getPlugin().getConfig().getInt("vending-machine." + e + ".model-data");
             if (customModelData == 0) {
-                DraimShopLogger.sendMSG(
-                        "Отсутствуют CMD или установлено значение 0, по крайней мере для одного из торговых автоматов! Отключение плагина...",
-                        DraimShopLogger.LVL.FAIL);
+                DraimShopLogger.sendMessage(
+                        "Отсутствуют CMD или установлено значение 0, для одного из торговых автоматов! Отключение плагина...",
+                        LVL.FAIL);
                 Bukkit.getPluginManager().disablePlugin(DraimShop.getPlugin());
             }
             modelData.add(customModelData);
@@ -68,16 +69,16 @@ public class CreationGUI {
         for (String e : bc) {
             String customModelName = DraimShop.getPlugin().getConfig().getString("briefcase." + e + ".name");
             if (customModelName == null) {
-                DraimShopLogger.sendMSG("Имя не установлено, по крайней мере для одного из портфелей! Отключение плагина...",
-                        DraimShopLogger.LVL.FAIL);
+                DraimShopLogger.sendMessage("Имя не установлено для одного из портфелей! Отключение плагина...",
+                        LVL.FAIL);
                 Bukkit.getPluginManager().disablePlugin(DraimShop.getPlugin());
             }
             names.add(customModelName);
             Integer customModelData = DraimShop.getPlugin().getConfig().getInt("briefcase." + e + ".model-data");
             if (customModelData == 0) {
-                DraimShopLogger.sendMSG(
-                        "Отсутствуют CMD или установлено значение 0, по крайней мере для одного из портфелей! Отключение плагина...",
-                        DraimShopLogger.LVL.FAIL);
+                DraimShopLogger.sendMessage(
+                        "Отсутствуют CMD или установлено значение 0, для одного из портфелей! Отключение плагина...",
+                        LVL.FAIL);
                 Bukkit.getPluginManager().disablePlugin(DraimShop.getPlugin());
             }
             modelData.add(customModelData);

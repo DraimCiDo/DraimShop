@@ -5,10 +5,12 @@ api-version: 1.17
 author: DraimGooSe
 depend: [Vault]
 softdepend:
-  - WorldGuard,
-  - ItemsAdder,
-  - ProtocolLib,
-  - LocaleLib
+  [
+    WorldGuard,
+    ItemsAdder,
+    ProtocolLib,
+    LocaleLib,
+  ]
 commands:
   draimshop:
     aliases: [ds]

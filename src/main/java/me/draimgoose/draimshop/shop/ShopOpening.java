@@ -29,7 +29,8 @@ public class ShopOpening implements Listener {
         } else if (hand.equals(EquipmentSlot.OFF_HAND)) {
             evt.setCancelled(true);
             return;
-        } else if (!hand.equals(EquipmentSlot.HAND) || !evt.getAction().equals(Action.RIGHT_CLICK_BLOCK) || player.isSneaking()) {
+        } else if (!hand.equals(EquipmentSlot.HAND) || !evt.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+                || player.isSneaking()) {
             return;
         } else {
             evt.setCancelled(true);

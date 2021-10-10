@@ -18,7 +18,7 @@ public class LockAll extends DSComd {
 
     @Override
     public boolean exec() {
-        if (!sender.hasPermission("customshop.lockall")) {
+        if (!sender.hasPermission("draimshop.lockall")) {
             sender.sendMessage(LangUtils.getString("command-no-perms"));
             return false;
         }

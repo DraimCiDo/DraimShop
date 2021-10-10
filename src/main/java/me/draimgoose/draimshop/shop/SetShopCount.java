@@ -35,23 +35,23 @@ public class SetShopCount extends DSComd {
             return false;
         }
         if (args.length < 3) {
-            sender.sendMessage("§cНедопустимое количество аргументов!");
+            sender.sendMessage("§fНедопустимое кол-во аргументов!");
             return false;
         }
         Player player = Bukkit.getPlayerExact(args[1]);
         if (player == null) {
-            sender.sendMessage("§cНе удается найти указанного игрока, возможно его нет в сети!");
+            sender.sendMessage("§fНе удается найти указанного игрока, возможно он не в сети!");
             return true;
         }
         try {
             this.newCount = Integer.parseInt(SetShopCount.this.args[2]);
         } catch (NumberFormatException e) {
-            player.sendMessage("§cНеверный ввод цифры!");
+            player.sendMessage("§cНеверный ввод номера!");
             return false;
         }
         PlayerState state = PlayerState.getPlayerState(player);
         if (!state.startConversation(confirmingConversation)) {
-            player.sendMessage("§cВы все еще заняты другим делом!");
+            player.sendMessage("§cВы все еще заняты другой сделкой!");
         }
         return true;
     }
@@ -77,8 +77,8 @@ public class SetShopCount extends DSComd {
     private class AmountPrompt extends StringPrompt {
         @Override
         public String getPromptText(ConversationContext context) {
-            return "§9Убедитесь, что у игрока есть правильное количество существующих магазинов, прежде чем давать команду. "
-                    + "Подтвердить сброс? (да/нет)";
+            return "§9Убедитесь, что у игрока есть правильное кол-во существующих магазинов, прежде чем давать команду. "
+                    + "Подтвердите сброс? (да/нет)";
         }
 
         @Override
@@ -91,7 +91,7 @@ public class SetShopCount extends DSComd {
                             CompletableFuture<Void> voidcf = CompletableFuture.runAsync(() -> DraimShop.getPlugin()
                                     .getDB().setShopsOwned(player.getUniqueId(), SetShopCount.this.newCount));
                             voidcf.thenRun(() -> player
-                                    .sendMessage("§aОбщее количество магазинов игроков установлено на " + SetShopCount.this.newCount + "!"));
+                                    .sendMessage("§aОбщее кол-во магазинов игрока установлено на " + SetShopCount.this.newCount + "!"));
                         } catch (NumberFormatException e) {
                             player.sendMessage("§cНеверный ввод номера!");
                         }
@@ -100,11 +100,11 @@ public class SetShopCount extends DSComd {
                         player.sendMessage("§cОперация отменена...");
                         break;
                     default:
-                        player.sendMessage("§cНеверный ввод!");
+                        player.sendMessage("§cНеверный ввод");
                         break;
                 }
             } else {
-                context.getForWhom().sendRawMessage("Это команда доступна только для игроков.");
+                context.getForWhom().sendRawMessage("Это команда только для игроков.");
             }
             return END_OF_CONVERSATION;
         }

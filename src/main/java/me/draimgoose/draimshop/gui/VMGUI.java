@@ -3,6 +3,7 @@ package me.draimgoose.draimshop.gui;
 import me.draimgoose.draimshop.plugin.DraimShop;
 import me.draimgoose.draimshop.utils.LangUtils;
 import me.draimgoose.draimshop.utils.MsgUtils;
+import me.draimgoose.draimshop.utils.MsgUtils.MSG;
 import me.draimgoose.draimshop.utils.UIUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -33,7 +34,6 @@ public class VMGUI extends ShopGUI {
         inventoryView = Bukkit.createInventory(null, 9 * 4, LangUtils.getString("vending-machine-customer"));
         inventory = Bukkit.createInventory(null, 9 * 3, LangUtils.getString("vending-machine-owner"));
 
-        // Setting up UI elemenets on the last row.
         int[] blackSlots = new int[] { 0, 1, 2, 3, 5, 6, 7, 8 };
         for (int i : blackSlots) {
             UIUtils.createItem(inventoryView, 3, i, Material.BLACK_STAINED_GLASS_PANE, 1, " ");
@@ -108,10 +108,10 @@ public class VMGUI extends ShopGUI {
     @Override
     public void purchaseItem(ItemStack item, int amount) {
         if (item == null) {
-            viewer.sendMessage("§cПредмет равен нулю...");
+            viewer.sendMessage("§cПредмет не найден...");
             return;
         } else if (!inventory.containsAtLeast(item, amount) && !this.isAdmin) {
-            MsgUtils.MSG message = MsgUtils.getMSG(LangUtils.getString("customer-buy-fail-item"), ownerID,
+            MSG message = MsgUtils.getMessage(LangUtils.getString("customer-buy-fail-item"), ownerID,
                     viewer, 0, item, amount);
             DraimShop.getPlugin().support().sendMSG(viewer, message);
             return;
@@ -123,7 +123,7 @@ public class VMGUI extends ShopGUI {
 
         Inventory pInventory = viewer.getInventory();
         if (!UIUtils.hasSpace(pInventory, item, amount)) {
-            MsgUtils.MSG message = MsgUtils.getMSG(LangUtils.getString("customer-buy-fail-space"), ownerID,
+            MSG message = MsgUtils.getMessage(LangUtils.getString("customer-buy-fail-space"), ownerID,
                     viewer, totalCost, item, amount);
             DraimShop.getPlugin().support().sendMSG(viewer, message);
         } else if (super.ownerSell(amount, totalCost, item)) {
@@ -179,5 +179,4 @@ public class VMGUI extends ShopGUI {
         this.interactingInventory = inventory;
         this.isOwnerView = true;
     }
-
 }

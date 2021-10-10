@@ -3,6 +3,8 @@ package me.draimgoose.draimshop.gui;
 import me.draimgoose.draimshop.player.PlayerState;
 import me.draimgoose.draimshop.plugin.DraimShop;
 import me.draimgoose.draimshop.plugin.DraimShopLogger;
+import me.draimgoose.draimshop.plugin.DraimShopLogger.LVL;
+import me.draimgoose.draimshop.utils.MsgUtils.MSG;
 import me.draimgoose.draimshop.utils.LangUtils;
 import me.draimgoose.draimshop.utils.MsgUtils;
 import me.draimgoose.draimshop.utils.UIUtils;
@@ -31,8 +33,8 @@ public class BriefcaseGUI extends ShopGUI {
         EntityEquipment armorStandContent = armorStand.getEquipment();
         ItemStack item = armorStandContent.getLeggings();
         if (item != null && item.getType() != Material.AIR) {
-            normalView = Bukkit.createInventory(null, 9 * 4, LangUtils.getString("newt-briefcase-customer"));
-            ownerView = Bukkit.createInventory(null, 9 * 4, LangUtils.getString("newt-briefcase-owner"));
+            normalView = Bukkit.createInventory(null, 9 * 4, LangUtils.getString("briefcase-customer"));
+            ownerView = Bukkit.createInventory(null, 9 * 4, LangUtils.getString("briefcase-owner"));
 
             ItemStack placeHolder = armorStandContent.getChestplate();
             List<String> info = placeHolder.getItemMeta().getLore();
@@ -92,7 +94,7 @@ public class BriefcaseGUI extends ShopGUI {
 
     public void sellItem(ItemStack item, int amount) {
         if (item == null) {
-            viewer.sendMessage("§cПредмет равен нулю...");
+            viewer.sendMessage("§cПредмет не найден...");
             return;
         }
         ItemStack clone = item.clone();
@@ -100,7 +102,7 @@ public class BriefcaseGUI extends ShopGUI {
         Inventory pInventory = viewer.getInventory();
 
         if (!pInventory.containsAtLeast(item, amount)) {
-            MsgUtils.MSG message = MsgUtils.getMSG(LangUtils.getString("customer-sell-fail-item"), ownerID,
+            MSG message = MsgUtils.getMessage(LangUtils.getString("customer-sell-fail-item"), ownerID,
                     viewer, 0, item, amount);
             DraimShop.getPlugin().support().sendMSG(viewer, message);
             return;
@@ -147,7 +149,7 @@ public class BriefcaseGUI extends ShopGUI {
         }
         ItemStack item = this.getItem();
         if (this.quantity < amount) {
-            MsgUtils.MSG message = MsgUtils.getMSG(LangUtils.getString("customer-buy-fail-item"), ownerID,
+            MSG message = MsgUtils.getMessage(LangUtils.getString("customer-buy-fail-item"), ownerID,
                     viewer, 0, item, amount);
             DraimShop.getPlugin().support().sendMSG(viewer, message);
             return;
@@ -155,10 +157,10 @@ public class BriefcaseGUI extends ShopGUI {
         Inventory pInventory = viewer.getInventory();
 
         if (!UIUtils.hasSpace(pInventory, item, amount)) {
-            MsgUtils.MSG message = MsgUtils.getMSG(LangUtils.getString("customer-buy-fail-space"), ownerID,
+            MSG message = MsgUtils.getMessage(LangUtils.getString("customer-buy-fail-space"), ownerID,
                     viewer, 0, item, amount);
             DraimShop.getPlugin().support().sendMSG(viewer, message);
-        } else { // Valid operation
+        } else {
             List<ItemStack> stacks = new ArrayList<>();
             int stackNumber = 0;
             int currentAmount = amount;
@@ -190,7 +192,7 @@ public class BriefcaseGUI extends ShopGUI {
         Inventory pInventory = viewer.getInventory();
 
         if (!pInventory.containsAtLeast(item, amount)) {
-            MsgUtils.MSG message = MsgUtils.getMSG(LangUtils.getString("customer-sell-fail-item"), ownerID,
+            MSG message = MsgUtils.getMessage(LangUtils.getString("customer-sell-fail-item"), ownerID,
                     viewer, 0, item, amount);
             DraimShop.getPlugin().support().sendMSG(viewer, message);
             return;
@@ -209,20 +211,20 @@ public class BriefcaseGUI extends ShopGUI {
         EntityEquipment armorStandContent = this.armorStand.getEquipment();
         ItemStack placeHolder = armorStandContent.getChestplate();
         if (placeHolder == null || placeHolder.getType() == Material.AIR) {
-            DraimShopLogger.sendMSG("Портфель без placeholder, обнаружен в " + this.armorStand.getLocation()
-                    + ", не удалось обновить информацию о магазине. Сообщите об этой ошибке!", DraimShopLogger.LVL.FAIL);
+            DraimShopLogger.sendMessage("Портфель без Placheholder, обнаружен на " + this.armorStand.getLocation()
+                    + ", не удалось обновить информацию о магазине. Сообщите об этой ошибке!", LVL.FAIL);
             return false;
         }
         ItemMeta meta = placeHolder.getItemMeta();
         if (!meta.hasLore()) {
-            DraimShopLogger.sendMSG("Placeholder портфеля без лора, обнаружен на "
-                    + this.armorStand.getLocation() + ", не удалось обновить информацию о магазине. Сообщите об этой ошибке! информация, обнаруженная на", DraimShopLogger.LVL.FAIL);
+            DraimShopLogger.sendMessage("Placeholder портфеля без лора был найден на "
+                    + this.armorStand.getLocation() + ", не удалось обновить информацию о магазине. Сообщите об этой ошибке!", LVL.FAIL);
             return false;
         }
         List<String> lore = meta.getLore();
         if (lore.size() < 3) {
-            DraimShopLogger.sendMSG("Placeholder портфеля с неполным лором, обнаружен на "
-                    + this.armorStand.getLocation() + ", не удалось обновить информацию о магазине. Сообщите об этой ошибке!", DraimShopLogger.LVL.FAIL);
+            DraimShopLogger.sendMessage("Placeholder портфеля с неполным лором, найден на "
+                    + this.armorStand.getLocation() + ", не удалось обновить информацию о магазине. Сообщите об этой ошибке!", LVL.FAIL);
             return false;
         } else {
             lore.set(index - 1, property.toString());
@@ -236,11 +238,11 @@ public class BriefcaseGUI extends ShopGUI {
     @Override
     public void purchaseItem(ItemStack item, int amount) {
         if (item == null) {
-            viewer.sendMessage("§cПредмет равен нулю...");
+            viewer.sendMessage("§cПредмет не найден...");
             return;
         }
         if (this.quantity < amount && !this.isAdmin) {
-            MsgUtils.MSG message = MsgUtils.getMSG(LangUtils.getString("customer-buy-fail-item"), ownerID,
+            MSG message = MsgUtils.getMessage(LangUtils.getString("customer-buy-fail-item"), ownerID,
                     viewer, 0, item, amount);
             DraimShop.getPlugin().support().sendMSG(viewer, message);
             return;
@@ -249,7 +251,7 @@ public class BriefcaseGUI extends ShopGUI {
         double totalCost = amount * price;
 
         if (!UIUtils.hasSpace(pInventory, item, amount)) {
-            MsgUtils.MSG message = MsgUtils.getMSG(LangUtils.getString("customer-buy-fail-space"), ownerID,
+            MSG message = MsgUtils.getMessage(LangUtils.getString("customer-buy-fail-space"), ownerID,
                     viewer, totalCost, item, amount);
             DraimShop.getPlugin().support().sendMSG(viewer, message);
         } else if (super.ownerSell(amount, totalCost, item)) {
